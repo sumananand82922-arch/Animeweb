@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnimeWeb</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#090910;
+ color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:20px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:#12121c;
+}
+.logo{font-size:26px;font-weight:bold;color:#a78bfa}
+nav a{color:white;text-decoration:none;margin-left:12px}
+.hero{
+ padding:65px 22px;
+ background:linear-gradient(120deg,#32145e,#111827,#090910);
+}
+.hero h1{font-size:38px;margin-bottom:10px}
+.hero p{color:#ddd}
+input{
+ width:90%;
+ padding:14px;
+ margin:20px 5%;
+ border:1px solid #444;
+ border-radius:10px;
+ background:#171722;
+ color:white;
+ font-size:16px;
+}
+h2{margin:20px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:15px;
+ padding:15px;
+}
+.card{
+ background:#171722;
+ border-radius:12px;
+ overflow:hidden;
+}
+.poster{
+ height:145px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-size:45px;
+ background:linear-gradient(135deg,#5b21b6,#111827);
+}
+.card h3{margin:12px 10px 5px}
+.card p{margin:5px 10px 14px;color:#aaa;font-size:13px}
+button{
+ background:#8b5cf6;
+ color:white;
+ border:0;
+ padding:10px 14px;
+ border-radius:7px;
+ margin:0 10px 14px;
+}
+footer{text-align:center;padding:30px;color:#888}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">AnimeWeb</div>
+ <nav>
+  <a href="#">Home</a>
+  <a href="#anime">Anime</a>
+ </nav>
+</header>
+
+<section class="hero">
+ <h1>Welcome to AnimeWeb</h1>
+ <p>Your Anime Universe Starts Here.</p>
+ <p>Discover Anime. Explore Stories. Enjoy!</p>
+</section>
+
+<input id="search" placeholder="Search your favourite anime...">
+
+<h2 id="anime">Popular Anime</h2>
+
+<div class="grid" id="animeList">
+
+<div class="card">
+ <div class="poster">⚔️</div>
+ <h3>Attack on Titan</h3>
+ <p>Action • Dark Fantasy</p>
+ <button onclick="watch('Attack on Titan')">Explore</button>
+</div>
+
+<div class="card">
+ <div class="poster">👑</div>
+ <h3>One Piece</h3>
+ <p>Adventure • Fantasy</p>
+ <button onclick="watch('One Piece')">Explore</button>
+</div>
+
+<div class="card">
+ <div class="poster">👁️</div>
+ <h3>Death Note</h3>
+ <p>Thriller • Mystery</p>
+ <button onclick="watch('Death Note')">Explore</button>
+</div>
+
+<div class="card">
+ <div class="poster">🔥</div>
+ <h3>Jujutsu Kaisen</h3>
+ <p>Action • Supernatural</p>
+ <button onclick="watch('Jujutsu Kaisen')">Explore</button>
+</div>
+
+<div class="card">
+ <div class="poster">🌊</div>
+ <h3>Demon Slayer</h3>
+ <p>Action • Fantasy</p>
+ <button onclick="watch('Demon Slayer')">Explore</button>
+</div>
+
+<div class="card">
+ <div class="poster">🐉</div>
+ <h3>Dragon Ball</h3>
+ <p>Action • Adventure</p>
+ <button onclick="watch('Dragon Ball')">Explore</button>
+</div>
+
+</div>
+
+<footer>
+ AnimeWeb © 2026
+ <p>Discover your next favourite anime.</p>
+</footer>
+
+<script>
+function watch(name){
+ window.open(
+ 'https://www.google.com/search?q='+encodeURIComponent(name+' official streaming India'),
+ '_blank'
+ );
+}
+
+document.getElementById('search').addEventListener('input',function(){
+ let value=this.value.toLowerCase();
+ document.querySelectorAll('.card').forEach(card=>{
+  card.style.display=card.innerText.toLowerCase().includes(value)
+  ?'block':'none';
+ });
+});
+</script>
+
+</body>
+</html>
