@@ -218,6 +218,103 @@
     }));
     search.addEventListener("input", render);
     render();
-  </script>
+    <!-- Animeweb Extra Features -->
+ // Animeweb Extra Features
+const animewebSaved = JSON.parse(localStorage.getItem("animewebWatchlist") || "[]");
+let animewebWatchOnly = false;
+
+const animewebTools = document.createElement("section");
+animewebTools.innerHTML = `
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:25px 0">
+    <button id="animeRandom" class="anime-extra-btn">🎲 Random Anime</button>
+    <button id="animeWatchToggle" class="anime-extra-btn">⭐ My Watchlist</button>
+  </div>
+  <h2 style="margin:25px 0 12px">🔥 Top 10 Anime</h2>
+  <div id="animeTopTen" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:25px"></div>
+`;
+
+grid.parentElement.insertBefore(animewebTools, grid);
+
+const animeExtraStyle = document.createElement("style");
+animeExtraStyle.textContent = `
+  .anime-extra-btn {
+    background:linear-gradient(120deg,#a78bfa,#f472b6);
+    color:#090910;border:0;border-radius:12px;
+    padding:12px 18px;font-weight:bold;cursor:pointer;
+  }
+  .anime-save-btn {
+    margin-top:9px;background:#171a2a;color:white;
+    border:1px solid #a78bfa;border-radius:9px;
+    padding:8px 12px;cursor:pointer;
+  }
+  .anime-save-btn.saved {background:#a78bfa;color:#090910}
+  #animeTopTen button {
+    background:#171a2a;color:white;border:1px solid #a78bfa;
+    border-radius:10px;padding:10px;cursor:pointer;
+  }
+`;
+document.head.appendChild(animeExtraStyle);
+
+function animewebSave(title) {
+  if (animewebSaved.includes(title)) {
+    animewebSaved.splice(animewebSaved.indexOf(title), 1);
+  } else {
+    animewebSaved.push(title);
+  }
+  localStorage.setItem("animewebWatchlist", JSON.stringify(animewebSaved));
+  render();
+}
+
+function animewebAddSaveButtons() {
+  grid.querySelectorAll(".card").forEach(card => {
+    const title = card.querySelector("h3")?.textContent;
+    if (!title || card.querySelector(".anime-save-btn")) return;
+
+    const button = document.createElement("button");
+    button.className = "anime-save-btn";
+    button.textContent = animewebSaved.includes(title)
+      ? "⭐ Saved"
+      : "☆ Add to Watchlist";
+    if (animewebSaved.includes(title)) button.classList.add("saved");
+
+    button.onclick = () => animewebSave(title);
+    card.querySelector(".card-info")?.appendChild(button);
+  });
+
+  if (animewebWatchOnly) {
+    grid.querySelectorAll(".card").forEach(card => {
+      const title = card.querySelector("h3")?.textContent;
+      card.style.display = animewebSaved.includes(title) ? "" : "none";
+    });
+  }
+}
+
+const animewebOriginalRender = render;
+render = function () {
+  animewebOriginalRender();
+  animewebAddSaveButtons();
+};
+
+document.getElementById("animeRandom").onclick = () => {
+  const randomAnime = animeList[Math.floor(Math.random() * animeList.length)];
+  if (randomAnime) showDetails(randomAnime.title);
+};
+
+document.getElementById("animeWatchToggle").onclick = () => {
+  animewebWatchOnly = !animewebWatchOnly;
+  document.getElementById("animeWatchToggle").textContent =
+    animewebWatchOnly ? "📚 Show All Anime" : "⭐ My Watchlist";
+  render();
+};
+
+document.getElementById("animeTopTen").innerHTML =
+  animeList.slice(0, 10).map((anime, index) => `
+    <button onclick="showDetails('${anime.title.replace(/'/g, "\\'")}')">
+      ${index + 1}. ${anime.title}
+    </button>
+  `).join("");
+
+render();
+ </script>
 </body>
 </html>
