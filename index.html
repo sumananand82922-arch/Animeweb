@@ -1,164 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AnimeWeb</title>
-
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;
- background:#090910;
- color:white;
- font-family:Arial,sans-serif;
-}
-header{
- padding:20px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- background:#12121c;
-}
-.logo{font-size:26px;font-weight:bold;color:#a78bfa}
-nav a{color:white;text-decoration:none;margin-left:12px}
-.hero{
- padding:65px 22px;
- background:linear-gradient(120deg,#32145e,#111827,#090910);
-}
-.hero h1{font-size:38px;margin-bottom:10px}
-.hero p{color:#ddd}
-input{
- width:90%;
- padding:14px;
- margin:20px 5%;
- border:1px solid #444;
- border-radius:10px;
- background:#171722;
- color:white;
- font-size:16px;
-}
-h2{margin:20px}
-.grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:15px;
- padding:15px;
-}
-.card{
- background:#171722;
- border-radius:12px;
- overflow:hidden;
-}
-.poster{
- height:145px;
- display:flex;
- justify-content:center;
- align-items:center;
- font-size:45px;
- background:linear-gradient(135deg,#5b21b6,#111827);
-}
-.card h3{margin:12px 10px 5px}
-.card p{margin:5px 10px 14px;color:#aaa;font-size:13px}
-button{
- background:#8b5cf6;
- color:white;
- border:0;
- padding:10px 14px;
- border-radius:7px;
- margin:0 10px 14px;
-}
-footer{text-align:center;padding:30px;color:#888}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animeweb | Anime Universe</title>
+  <meta name="description" content="Discover anime on Animeweb. Browse your next adventure.">
+  <style>
+    :root {
+      --bg: #080910;
+      --panel: #11131f;
+      --panel2: #171a2a;
+      --text: #f5f6ff;
+      --muted: #a4a8c0;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --border: rgba(255,255,255,.09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10; display: flex; align-items: center;
+      gap: 24px; padding: 17px 6%; background: rgba(8,9,16,.88);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 24px; font-weight: 900; letter-spacing: -.8px; white-space: nowrap; }
+    .logo span { color: var(--purple); }
+    nav { display: flex; gap: 20px; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    nav a:hover { color: white; }
+    .search-wrap { margin-left: auto; width: min(330px, 38vw); }
+    #search {
+      width: 100%; padding: 11px 15px; color: white; background: #171927;
+      border: 1px solid var(--border); border-radius: 12px; outline: none;
+    }
+    #search:focus { border-color: var(--purple); }
+    .hero {
+      min-height: 370px; padding: 66px 7%; display: flex; align-items: center;
+      background:
+        radial-gradient(ellipse at 80% 25%, rgba(167,139,250,.28), transparent 38%),
+        radial-gradient(ellipse at 65% 90%, rgba(244,114,182,.15), transparent 35%),
+        linear-gradient(115deg, #101221, #080910 75%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-content { max-width: 680px; }
+    .eyebrow { color: var(--pink); font-weight: 800; letter-spacing: 2px; font-size: 12px; }
+    h1 { font-size: clamp(36px, 6vw, 66px); line-height: 1.04; margin: 15px 0; letter-spacing: -2px; }
+    h1 span { color: var(--purple); }
+    .hero p { color: var(--muted); max-width: 540px; line-height: 1.7; }
+    .primary {
+      margin-top: 16px; border: 0; border-radius: 12px; padding: 13px 20px;
+      color: #090910; font-weight: 800; background: linear-gradient(100deg, var(--purple), var(--pink));
+    }
+    main { padding: 34px 6% 60px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    h2 { margin: 0 0 8px; font-size: 27px; }
+    .sub { color: var(--muted); margin: 0; font-size: 14px; }
+    .filters { display: flex; gap: 9px; flex-wrap: wrap; margin: 25px 0 22px; }
+    .filter {
+      border: 1px solid var(--border); color: var(--muted); background: var(--panel);
+      padding: 9px 14px; border-radius: 999px;
+    }
+    .filter.active, .filter:hover { color: #fff; border-color: var(--purple); background: #29213f; }
+    .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+    .card {
+      overflow: hidden; background: var(--panel); border: 1px solid var(--border);
+      border-radius: 15px; transition: transform .2s, border-color .2s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: rgba(167,139,250,.6); }
+    .poster {
+      min-height: 205px; display: grid; place-items: center; position: relative;
+      font-size: 62px; background: var(--poster, linear-gradient(135deg,#33275d,#141727));
+    }
+    .poster::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent,rgba(0,0,0,.55)); }
+    .tag {
+      position: absolute; z-index: 1; top: 10px; left: 10px; font-size: 10px;
+      font-weight: 800; padding: 6px 8px; border-radius: 7px; background: rgba(8,9,16,.78);
+    }
+    .card-info { padding: 13px; }
+    .card h3 { font-size: 15px; margin: 0 0 7px; }
+    .meta { color: var(--muted); font-size: 12px; }
+    .card button {
+      width: 100%; margin-top: 12px; padding: 9px; border-radius: 9px;
+      border: 1px solid var(--border); background: var(--panel2); color: white;
+    }
+    .card button:hover { background: #29213f; }
+    #empty { display: none; color: var(--muted); padding: 35px 0; }
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 25px; color: var(--muted); font-size: 13px; }
+    dialog {
+      width: min(500px, 92vw); color: white; background: #141625;
+      border: 1px solid var(--border); border-radius: 18px; padding: 25px;
+    }
+    dialog::backdrop { background: rgba(0,0,0,.75); backdrop-filter: blur(5px); }
+    dialog h2 { margin-bottom: 10px; }
+    dialog p { color: var(--muted); line-height: 1.6; }
+    .close { float: right; background: transparent; color: white; border: 0; font-size: 23px; }
+    @media (max-width: 1050px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 780px) {
+      .topbar { flex-wrap: wrap; gap: 14px; padding: 14px 5%; }
+      nav { order: 3; width: 100%; }
+      .search-wrap { width: 100%; margin-left: 0; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      .poster { min-height: 165px; }
+    }
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .poster { min-height: 150px; }
+      main { padding-inline: 4%; }
+      .hero { padding: 50px 5%; }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="topbar">
+    <div class="logo">Anime<span>web</span> ✦</div>
+    <nav aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#catalog">Anime</a>
+      <a href="#catalog" id="dubNav">Dubs</a>
+    </nav>
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Search anime..." aria-label="Search anime">
+    </div>
+  </header>
 
-<header>
- <div class="logo">AnimeWeb</div>
- <nav>
-  <a href="#">Home</a>
-  <a href="#anime">Anime</a>
- </nav>
-</header>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="eyebrow">YOUR NEXT ADVENTURE STARTS HERE</div>
+      <h1>Enter the <span>Anime</span><br>Universe.</h1>
+      <p>Explore unforgettable stories, legendary heroes and worlds beyond imagination. Find your next favourite anime.</p>
+      <button class="primary" onclick="document.querySelector('#catalog').scrollIntoView()">Explore Anime ↓</button>
+    </div>
+  </section>
 
-<section class="hero">
- <h1>Welcome to AnimeWeb</h1>
- <p>Your Anime Universe Starts Here.</p>
- <p>Discover Anime. Explore Stories. Enjoy!</p>
-</section>
+  <main id="catalog">
+    <div class="section-head">
+      <div>
+        <h2>Explore the Library</h2>
+        <p class="sub">A demo collection to help you discover anime.</p>
+      </div>
+    </div>
+    <div class="filters" id="filters">
+      <button class="filter active" data-filter="All">All Anime</button>
+      <button class="filter" data-filter="Hindi Dub">Hindi Dub</button>
+      <button class="filter" data-filter="English Dub">English Dub</button>
+      <button class="filter" data-filter="Action">Action</button>
+      <button class="filter" data-filter="Fantasy">Fantasy</button>
+      <button class="filter" data-filter="Adventure">Adventure</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div id="empty">No anime found. Try another search or filter.</div>
+  </main>
 
-<input id="search" placeholder="Search your favourite anime...">
+  <dialog id="details">
+    <button class="close" onclick="details.close()" aria-label="Close">×</button>
+    <div id="detailContent"></div>
+  </dialog>
 
-<h2 id="anime">Popular Anime</h2>
+  <footer>Animeweb ✦ Made for anime fans · Discover and enjoy responsibly</footer>
 
-<div class="grid" id="animeList">
+  <script>
+    const animeList = [
+      {title:"Naruto", genre:"Adventure", year:"2002", emoji:"🍥", color:"linear-gradient(135deg,#bd642c,#382044)", dubs:["Hindi Dub","English Dub"], desc:"A young ninja dreams of becoming the leader of his village."},
+      {title:"Death Note", genre:"Mystery", year:"2006", emoji:"📓", color:"linear-gradient(135deg,#242638,#090910)", dubs:["English Dub"], desc:"A supernatural notebook leads to a battle of intelligence and justice."},
+      {title:"Demon Slayer", genre:"Action", year:"2019", emoji:"⚔️", color:"linear-gradient(135deg,#286b76,#271b42)", dubs:["Hindi Dub","English Dub"], desc:"A determined swordsman journeys to protect his family and help his sister."},
+      {title:"One Piece", genre:"Adventure", year:"1999", emoji:"🏴‍☠️", color:"linear-gradient(135deg,#287f9a,#d28c39)", dubs:["Hindi Dub","English Dub"], desc:"A crew of pirates sails toward the legendary treasure."},
+      {title:"Jujutsu Kaisen", genre:"Action", year:"2020", emoji:"👊", color:"linear-gradient(135deg,#673d8d,#17182b)", dubs:["Hindi Dub","English Dub"], desc:"Students train to face supernatural curses."},
+      {title:"Attack on Titan", genre:"Action", year:"2013", emoji:"🛡️", color:"linear-gradient(135deg,#53614b,#252333)", dubs:["English Dub"], desc:"Humanity fights for survival behind enormous walls."},
+      {title:"Dragon Ball", genre:"Adventure", year:"1986", emoji:"🐉", color:"linear-gradient(135deg,#d98224,#4c2b70)", dubs:["Hindi Dub","English Dub"], desc:"A martial artist travels, trains and meets powerful rivals."},
+      {title:"My Hero Academia", genre:"Action", year:"2016", emoji:"💥", color:"linear-gradient(135deg,#4b9a72,#173a56)", dubs:["Hindi Dub","English Dub"], desc:"A student works toward becoming a hero in a world of powers."},
+      {title:"Frieren", genre:"Fantasy", year:"2023", emoji:"✨", color:"linear-gradient(135deg,#548e9c,#4a3c77)", dubs:["English Dub"], desc:"An elven mage reflects on friendship and the passage of time."},
+      {title:"Spy x Family", genre:"Adventure", year:"2022", emoji:"🕵️", color:"linear-gradient(135deg,#c77a9b,#3e4f72)", dubs:["Hindi Dub","English Dub"], desc:"An unusual family keeps secrets while trying to live together."}
+    ];
+    let activeFilter = "All";
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    const details = document.getElementById("details");
 
-<div class="card">
- <div class="poster">⚔️</div>
- <h3>Attack on Titan</h3>
- <p>Action • Dark Fantasy</p>
- <button onclick="watch('Attack on Titan')">Explore</button>
-</div>
-
-<div class="card">
- <div class="poster">👑</div>
- <h3>One Piece</h3>
- <p>Adventure • Fantasy</p>
- <button onclick="watch('One Piece')">Explore</button>
-</div>
-
-<div class="card">
- <div class="poster">👁️</div>
- <h3>Death Note</h3>
- <p>Thriller • Mystery</p>
- <button onclick="watch('Death Note')">Explore</button>
-</div>
-
-<div class="card">
- <div class="poster">🔥</div>
- <h3>Jujutsu Kaisen</h3>
- <p>Action • Supernatural</p>
- <button onclick="watch('Jujutsu Kaisen')">Explore</button>
-</div>
-
-<div class="card">
- <div class="poster">🌊</div>
- <h3>Demon Slayer</h3>
- <p>Action • Fantasy</p>
- <button onclick="watch('Demon Slayer')">Explore</button>
-</div>
-
-<div class="card">
- <div class="poster">🐉</div>
- <h3>Dragon Ball</h3>
- <p>Action • Adventure</p>
- <button onclick="watch('Dragon Ball')">Explore</button>
-</div>
-
-</div>
-
-<footer>
- AnimeWeb © 2026
- <p>Discover your next favourite anime.</p>
-</footer>
-
-<script>
-function watch(name){
- window.open(
- 'https://www.google.com/search?q='+encodeURIComponent(name+' official streaming India'),
- '_blank'
- );
-}
-
-document.getElementById('search').addEventListener('input',function(){
- let value=this.value.toLowerCase();
- document.querySelectorAll('.card').forEach(card=>{
-  card.style.display=card.innerText.toLowerCase().includes(value)
-  ?'block':'none';
- });
-});
-</script>
-
+    function render() {
+      const term = search.value.trim().toLowerCase();
+      const shown = animeList.filter(a => {
+        const matchesText = (a.title + " " + a.genre).toLowerCase().includes(term);
+        const matchesFilter = activeFilter === "All" || a.genre === activeFilter || a.dubs.includes(activeFilter);
+        return matchesText && matchesFilter;
+      });
+      grid.innerHTML = shown.map(a => `
+        <article class="card">
+          <div class="poster" style="--poster:${a.color}">
+            <span class="tag">${a.year}</span><span aria-hidden="true">${a.emoji}</span>
+          </div>
+          <div class="card-info">
+            <h3>${a.title}</h3>
+            <div class="meta">${a.genre} · ${a.dubs.join(" / ")}</div>
+            <button onclick="showDetails('${a.title.replace(/'/g,"\\'")}')">View details</button>
+          </div>
+        </article>`).join("");
+      document.getElementById("empty").style.display = shown.length ? "none" : "block";
+    }
+    function showDetails(title) {
+      const a = animeList.find(item => item.title === title);
+      document.getElementById("detailContent").innerHTML =
+        `<div class="eyebrow">ANIME DETAILS</div><h2>${a.emoji} ${a.title}</h2>
+         <p>${a.desc}</p><p><strong>Genre:</strong> ${a.genre}<br><strong>Year:</strong> ${a.year}<br><strong>Dub labels:</strong> ${a.dubs.join(", ")}</p>
+         <p>This is a catalogue demo. Use official streaming services or licensed sources to watch episodes.</p>`;
+      details.showModal();
+    }
+    document.querySelectorAll(".filter").forEach(btn => btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeFilter = btn.dataset.filter;
+      render();
+    }));
+    search.addEventListener("input", render);
+    render();
+  </script>
 </body>
 </html>
